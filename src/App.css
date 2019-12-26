@@ -60,7 +60,7 @@ form {
   text-align:center;
   background-color: blue;
   scrollbar-color:cyan;
-  scrollbar:auto;
+  overflow:auto;
 }
 
 
