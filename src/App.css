@@ -31,27 +31,85 @@
 
 body{
   background-color: #1EECA8;
-
+  text-align: center;
+  font-family:"Avenir Next", "Arial";
+  color:white;
 }
 
 #title{
   text-align:center;
   font-size: 7vh;
   color:white;
-  font-family:"Avenir Next", "Comic Sans MS";
+  font-family:"Avenir Next", "Arial";
   font-weight:bold;
   margin-top:5vh;
   margin-bottom: 3vh;
   background-color: red;
+
 }
 
 
+#centerDiv{
+  display:inline-block;
+  margin-left:-3.5vw;
+  /*to ensure the input boxes are horizontally centered,
+  ignoring the side buttons */
+  margin-top:8vh;
+  background-color: red;
+  width:57vw;
+}
 
+#sideButtons{
+
+  float:left;
+  display:inline-block;
+  width:5vw;
+  background-color:cyan;
+  text-align: center;
+
+}
+
+
+.sideButtonsList{
+
+  padding:0;
+  list-style-type: none;
+  vertical-align:middle;
+  text-align:center;
+  background-color: #994554;
+
+}
+
+.sideButton{
+
+  display: inline-block;
+  border-radius: 50%;
+  border-width: 0.8vh;
+  height:4vw;
+  width:4vw;
+  font-size:3.5vh;
+
+
+
+
+}
+
+.clearer{
+
+  height:0;
+  clear:both;
+
+}
+
+#form{
+  margin-left:0vw;
+  display:inline-block;
+  align:center;
+  background-color: purple;
+}
 
 form {
-  margin-top:10vh;
-  margin-left: auto;
-  margin-right: auto;
+
   overflow:scroll;
   width:50vw;
   height:45vh;
@@ -62,6 +120,7 @@ form {
   scrollbar-color:cyan;
   overflow:auto;
 }
+
 
 
 
@@ -86,7 +145,49 @@ font-size:5vh;
 
 }
 
+#lblCount{
 
+  font-size: 4vh;
+  font-weight: bold;
+  text-align: center;
+  background-color:purple;
+
+}
+
+button{
+
+
+  border-color:white;
+  border-width:1vh;
+  background: none;
+  color:white;
+  font-weight: bold;
+  border-style:solid;
+
+}
+
+
+button:disabled{
+
+border-color:gray;
+color:gray;
+
+
+}
+
+#pickButtonDiv{
+  text-align:center;
+  margin-top:5vh;
+
+}
+
+.pickButton{
+  border-width:1.2vh;
+  border-radius: 10%;
+  font-size: 4vh;
+  width:15vw;
+  height:10vh;
+}
 
 @keyframes App-logo-spin {
   from {

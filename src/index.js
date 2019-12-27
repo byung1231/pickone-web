@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {App, Form} from './App';
+import {Count, Form, PickButton} from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Count />, document.getElementById('sideButtons'));
 ReactDOM.render(<Form />, document.getElementById('form'));
+ReactDOM.render(<PickButton />, document.getElementById('pickButtonDiv'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
