@@ -55,7 +55,6 @@ body{
   /*to ensure the input boxes are horizontally centered,
   ignoring the side buttons */
   margin-top:8vh;
-  background-color: red;
   width:57vw;
 }
 
@@ -84,13 +83,11 @@ body{
 
   display: inline-block;
   border-radius: 50%;
-  border-width: 0.8vh;
+  border-width: calc(0.4vh + 0.3vw);
   height:4vw;
   width:4vw;
-  font-size:3.5vh;
-
-
-
+  font-size:2vw;
+  text-align: center;
 
 }
 
@@ -132,8 +129,11 @@ form {
 
   align:center;
 
+  border-style: solid;
+  border-radius: 2px;
 
-  background-color:green;
+
+  background-color:inherit;
   color:white;
 /*  border-radius:7px;
 border:5px solid yellow;
@@ -147,10 +147,12 @@ font-size:5vh;
 
 #lblCount{
 
-  font-size: 4vh;
+  font-size: calc(15px + 1vh);
+  height:5vh;
   font-weight: bold;
   text-align: center;
   background-color:purple;
+  min-height:20px;
 
 }
 
@@ -166,6 +168,11 @@ button{
 
 }
 
+.pickButton:active{
+  background-color: #18bc86;
+  border-color: #d1d1d1;
+}
+
 
 button:disabled{
 
@@ -178,6 +185,7 @@ color:gray;
 #pickButtonDiv{
   text-align:center;
   margin-top:5vh;
+  margin-left:3.5vw;
 
 }
 
@@ -187,6 +195,8 @@ color:gray;
   font-size: 4vh;
   width:15vw;
   height:10vh;
+  min-width:150px;
+  min-height:50px;
 }
 
 @keyframes App-logo-spin {
