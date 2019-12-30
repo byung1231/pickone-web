@@ -127,12 +127,27 @@ ReactDOM.render(<p>showing Input{currCount}</p>, document.getElementById('placeh
           },
           interval*i);
 
+// restoring the colors
           if (i > 1) {
             setTimeout(() => {
                 document.getElementById("Input"+(i-1)).style.backgroundColor="inherit"
               },
               interval*i);
           }
+
+          // coming back up (reversed order)
+          setTimeout(() => {
+              document.getElementById("Input"+(this.currCount-i+1)).style.backgroundColor="red"
+            },
+            (interval * (this.currCount + i-1)));
+
+          // restoring the colors again
+          if ((this.currCount - i + 2) > 0 && (this.currCount - i + 2) <= this.currCount) {
+            setTimeout(() => {
+                document.getElementById("Input"+(this.currCount-i+2)).style.backgroundColor="inherit"
+              },
+              (interval * (this.currCount + i-1)));
+            }
       }
 
       ReactDOM.render("pickOne()", document.getElementById('placeholder'));
