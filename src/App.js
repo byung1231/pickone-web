@@ -6,55 +6,52 @@ import './App.css';
 
 class App extends React.Component{
 
-  constructor(){
+  constructor(props){
 
-    super();
+    super(props);
 
     this.defaultCount = 3;
     this.maxCount = 20;
     this.minCount = 0;
-    this.currCount = this.defaultCount;
 
+    /*
+    NOTE:
+    Use state to store data if it is involved in rendering or data flow (i.e. if its used directly or indirectly in render method)
+    Use other instance fields to store data if value is NOT involved in rendering or data flow (to prevent rendering on change of data) e.g. to store a timer ID that is not used in render method. See TimerID example in official docs to understand this valid case.
+    */
 
     this.state = { count: this.defaultCount,
                   enableIncrement: true,
                   enableDecrement: true,
-                  animationActive:false
+                  animationActive:false,
+                  running: false
                 };
 
-      this.myRef = React.createRef();
 
   }
 
-  componentDidMount(){
-
-
-
-  }
 
   incrementCount = () => {
 
-    let currCount = this.state.count;
-    currCount += 1;
+    let newCount = this.state.count;
+    newCount += 1;
 
+    this.setState({count:newCount});
 
-
-    this.setState({count:currCount});
-
-    if (currCount >= this.maxCount) {
+    if (newCount >= this.maxCount) {
       this.setState({enableIncrement: false});
     }
     else{
       this.setState({enableIncrement: true});
     }
 
-    if (currCount > this.minCount) {
+    if (newCount > this.minCount) {
       this.setState({enableDecrement: true});
     }
 
-
-ReactDOM.render(<p>showing Input{currCount}</p>, document.getElementById('placeholder'));
-    document.getElementById("Input"+currCount).setAttribute("type","text");
+// REMOVE FOR PROD
+ReactDOM.render(<p>showing Input{newCount}</p>, document.getElementById('placeholder'));
+    document.getElementById("Input"+newCount).setAttribute("type","text");
 
 
 
@@ -64,22 +61,22 @@ ReactDOM.render(<p>showing Input{currCount}</p>, document.getElementById('placeh
 
   decrementCount = () => {
 
-    let currCount = this.state.count;
-    currCount -= 1;
-    this.setState({count:currCount});
+    let newCount = this.state.count;
+    newCount -= 1;
+    this.setState({count:newCount});
 
-    if (currCount <= this.minCount) {
+    if (newCount <= this.minCount) {
       this.setState({enableDecrement: false});
     }
     else{
       this.setState({enableDecrement: true});
     }
 
-    if (currCount < this.maxCount) {
+    if (newCount < this.maxCount) {
       this.setState({enableIncrement: true});
     }
 
-    var inputID = "Input" + (currCount + 1);
+    var inputID = "Input" + (newCount + 1);
 
     ReactDOM.render(<p>hiding {inputID}</p>, document.getElementById('placeholder'));
     document.getElementById(inputID).setAttribute("type","hidden");
@@ -94,7 +91,8 @@ ReactDOM.render(<p>showing Input{currCount}</p>, document.getElementById('placeh
       for (var i = 0; i < this.maxCount; i++){
 
         let boxID = "Input"+(i+1);
-        if (i >= this.currCount ) {
+
+        if (i >= this.state.count ) {
           inputs.push(<input type="hidden" class="textbox" id={boxID}></input>);
         }
         else{
@@ -110,53 +108,83 @@ ReactDOM.render(<p>showing Input{currCount}</p>, document.getElementById('placeh
       )
 
 
+
   }
 
 
 
    pickOne = () =>{
 
-     let interval = 100;
 
+
+     let count = 0
+     //let interval = 100 + (this.currCount * count)
+
+
+     while (count < 4) {
      // animation for the boxes
-      for(let i = 1; i <= this.currCount; i++){
+
+     let interval = 100
+     let startTime = interval * ((this.state.count * 2 * count)-(2*count))
+     let currCount = this.state.count;
+     //take 2 out for first and last boxes (since they are only visited once)
+
+     setTimeout(() => {
+         ReactDOM.render("currCount: " + this.state.count + ", startTime: " + startTime.toString(), document.getElementById('placeholder'));
+       },
+       startTime);
 
 
-        setTimeout(() => {
-            document.getElementById("Input"+i).style.backgroundColor="red"
-          },
-          interval*i);
+      for(let i = 1; i <= currCount; i++){
+
+
+        // for the first box - only run it the first iteration
+        // to prevent it from being ran twice
+
+
+          setTimeout(() => {
+              document.getElementById("Input"+i).style.backgroundColor="red"
+
+
+            },
+            startTime + interval*i);
+
+
+
+
+
 
 // restoring the colors
           if (i > 1) {
             setTimeout(() => {
                 document.getElementById("Input"+(i-1)).style.backgroundColor="inherit"
               },
-              interval*i);
+              startTime + interval*i);
           }
 
           // coming back up (reversed order)
           setTimeout(() => {
-              document.getElementById("Input"+(this.currCount-i+1)).style.backgroundColor="red"
+              document.getElementById("Input"+(currCount-i+1)).style.backgroundColor="red"
             },
-            (interval * (this.currCount + i-1)));
+            startTime + (interval * (currCount + i-1)));
 
           // restoring the colors again
-          if ((this.currCount - i + 2) > 0 && (this.currCount - i + 2) <= this.currCount) {
+          if ((currCount - i + 2) > 0 && (currCount - i + 2) <= currCount) {
             setTimeout(() => {
-                document.getElementById("Input"+(this.currCount-i+2)).style.backgroundColor="inherit"
+                document.getElementById("Input"+(currCount-i+2)).style.backgroundColor="inherit"
               },
-              (interval * (this.currCount + i-1)));
+            startTime +  (interval * (currCount + i-1)));
             }
+
+
+          }
+
+          count += 1;
+
+
+
+
       }
-
-      ReactDOM.render("pickOne()", document.getElementById('placeholder'));
-    /*  setTimeout(() => {
-          document.getElementById("Input1").style.backgroundColor="red"
-        },
-        1500);
-
-*/
 
     }
 
