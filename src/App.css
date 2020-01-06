@@ -169,15 +169,15 @@ button{
 }
 
 .pickButton:active{
-  background-color: #18bc86;
-  border-color: #d1d1d1;
+  background-color: #afaeae;
+  border-color: #afaeae;
 }
 
 
 button:disabled{
 
-border-color:gray;
-color:gray;
+border-color:#bbbbbb;
+color:#bbbbbb;
 
 
 }

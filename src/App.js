@@ -12,7 +12,9 @@ class App extends React.Component{
 
     this.defaultCount = 3;
     this.maxCount = 20;
-    this.minCount = 0;
+    this.minCount = 2;
+    this.secondaryColor = "brown"//"#026BAB"
+    this.lastRandomNumber = 0; // used to reset the input box color for the next run
 
     /*
     NOTE:
@@ -111,80 +113,137 @@ ReactDOM.render(<p>showing Input{newCount}</p>, document.getElementById('placeho
 
   }
 
+  generateRandomNumber = () => {
+
+var randomRaw = Math.random()
+    var random = 1 + (randomRaw * (this.state.count-1));
+    // adding 1 b/c minimum has to be 1 (input box IDs start from 1)
+    // subtracing 1 b/c the max has to be this.state.count (e.g. 3)
+
+    ReactDOM.render("randomRaw: " + randomRaw, document.getElementById('test'));
+
+    return Math.round(random);
+  }
 
 
    pickOne = () =>{
 
+     this.setState({running:true});
+
+     // reset the color for the last chosen box, if not being ran for the first time
+     if(this.lastRandomNumber > 0){
+        document.getElementById("Input"+this.lastRandomNumber).style.backgroundColor="inherit"
+     }
 
 
      let count = 0
      //let interval = 100 + (this.currCount * count)
-
-
-     while (count < 4) {
-     // animation for the boxes
-
      let interval = 100
-     let startTime = interval * ((this.state.count * 2 * count)-(2*count))
+     let numOfLoops = 5
      let currCount = this.state.count;
-     //take 2 out for first and last boxes (since they are only visited once)
+     let randomNumber = this.generateRandomNumber()
 
-     setTimeout(() => {
-         ReactDOM.render("currCount: " + this.state.count + ", startTime: " + startTime.toString(), document.getElementById('placeholder'));
-       },
-       startTime);
+     // decreasing the number of animations depending on the # of choices
+     switch (true){
+       case (currCount >= 10):
+          numOfLoops = 3;
+          break;
+       case (currCount >= 5):
+          numOfLoops = 4;
+          break;
+     }
 
+     // animation for the boxes
+     while (count < numOfLoops) {
 
-      for(let i = 1; i <= currCount; i++){
+       let startTime = interval * ((this.state.count * 2 * count)-(2*count))
+        //take 2 out from the times for first and last boxes (since they are only visited once)
 
-
-        // for the first box - only run it the first iteration
-        // to prevent it from being ran twice
-
-
-          setTimeout(() => {
-              document.getElementById("Input"+i).style.backgroundColor="red"
-
-
-            },
-            startTime + interval*i);
-
-
-
-
+      setTimeout(() => {
+          // ReactDOM.render("currCount: " + this.state.count + ", startTime: " + startTime.toString(), document.getElementById('placeholder'));
+           ReactDOM.render("rand: " + randomNumber, document.getElementById('placeholder'));
+         },
+         startTime);
 
 
-// restoring the colors
-          if (i > 1) {
-            setTimeout(() => {
-                document.getElementById("Input"+(i-1)).style.backgroundColor="inherit"
-              },
-              startTime + interval*i);
-          }
+         //NEW APPROACH: SEPARATE GOING UP AND down
 
-          // coming back up (reversed order)
-          setTimeout(() => {
-              document.getElementById("Input"+(currCount-i+1)).style.backgroundColor="red"
-            },
-            startTime + (interval * (currCount + i-1)));
+         // going down
+         for(let i = 0; i < currCount; i++){
 
-          // restoring the colors again
-          if ((currCount - i + 2) > 0 && (currCount - i + 2) <= currCount) {
-            setTimeout(() => {
-                document.getElementById("Input"+(currCount-i+2)).style.backgroundColor="inherit"
-              },
-            startTime +  (interval * (currCount + i-1)));
-            }
+            // Step 1: Change color (going down)
+           if (i < currCount - 1){
+
+             setTimeout(() => {
+               document.getElementById("Input"+(i+1)).style.backgroundColor=this.secondaryColor
+
+             },
+             startTime + interval*i);
+
+           }
+
+           // Step 2: restore color for the previous box
+           if (i > 0) {
+             setTimeout(() => {
+                 document.getElementById("Input"+i).style.backgroundColor="inherit"
+               },
+               startTime + interval*i);
+           }
+         }
+
+        startTime += interval*(currCount-2)
+
+         // going back up
+         for(let i = currCount; i > 0; i--){
 
 
-          }
+           // Step 3: Change color (coming back up from the bottom)
+           setTimeout(() => {
+               document.getElementById("Input"+i).style.backgroundColor=this.secondaryColor
+             },
+             startTime + (interval * (currCount - i + 1))
+           )
+             // subtracting 1 at the end, for the bottom box, b/c otherwise the time would be double counted
+             // b/c the bottom box is executed twice from steps 1 and 3.
+             // so that means e.g. if count = 3, and if we dont subtract -1,
+             // then it would be executed both for both times: interval * 3 (i = 0; step 3) and interval * 2 (i = 2; step 1)
 
-          count += 1;
 
 
+           // Step 4: Restore the color again
+           if ((i + 1) <= currCount) {
+             setTimeout(() => {
+                 document.getElementById("Input"+(i+1)).style.backgroundColor="inherit";
+               },
+             startTime +  (interval * (currCount - i+1))
+           )
+         }
 
 
-      }
+           if ((count == numOfLoops - 1) && ( i == randomNumber )){
+ReactDOM.render("i: " + i, document.getElementById('placeholder'));
+             break;
+           }
+
+         }
+     // re-enabling the buttons after all the actions
+           // only run once
+           if((count == numOfLoops - 1)){// && (i == currCount + 1)){
+             setTimeout(() => {
+                 this.setState({running:false})
+               }
+               ,
+               startTime + (currCount * interval * 2))
+           }
+
+
+           count += 1;
+
+
+       } //end of the while loop
+
+       this.lastRandomNumber = randomNumber
+
 
     }
 
@@ -194,9 +253,9 @@ ReactDOM.render(<p>showing Input{newCount}</p>, document.getElementById('placeho
       <div>
         <div id="sideButtons">
           <ul class="sideButtonsList">
-            <li><button type="button" class="sideButton" onClick={this.incrementCount} disabled={!this.state.enableIncrement}>+</button></li>
+            <li><button type="button" class="sideButton" onClick={this.incrementCount} disabled={!this.state.enableIncrement || this.state.running}>+</button></li>
             <li id="lblCount">{this.state.count}</li>
-            <li><button type="button" class="sideButton" onClick={this.decrementCount} disabled={!this.state.enableDecrement}>-</button></li>
+            <li><button type="button" class="sideButton" onClick={this.decrementCount} disabled={!this.state.enableDecrement || this.state.running}>-</button></li>
           </ul>
         </div>
         <div id="form">
@@ -205,7 +264,7 @@ ReactDOM.render(<p>showing Input{newCount}</p>, document.getElementById('placeho
         <div class="clearer"></div>
 
         <div id="pickButtonDiv">
-          <button type="button" class="pickButton" onClick={this.pickOne}>Pick One!</button>
+          <button type="button" class="pickButton" onClick={this.pickOne} disabled={this.state.running}>Pick One!</button>
         </div>
     </div>
     );
