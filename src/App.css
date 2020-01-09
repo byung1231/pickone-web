@@ -31,43 +31,70 @@
 
 body{
   background-color: #1EECA8;
-  text-align: center;
+
   font-family:"Avenir Next", "Arial";
   color:white;
+  text-align: center;
 }
 
 #title{
-  text-align:center;
-  font-size: 7vh;
+
   color:white;
   font-family:"Avenir Next", "Arial";
   font-weight:bold;
-  margin-top:5vh;
-  margin-bottom: 3vh;
   background-color: red;
+  left:0;
+  font-size: 45px;
+  margin-top:40px;
+  marign-bottom:25px;
+/*
+font-size: 7vh;
+margin-top:5vh;
+margin-bottom: 3vh;
+
+*/
 
 }
 
 
-#centerDiv{
+  #centerDiv{
+
+    display:inline-block;
+    font-size: 0;
+
+    /*to ensure the input boxes are horizontally centered,
+    ignoring the side buttons */
+    margin-top:8vh;
+    width:600px;
+    text-align: center;
+
+  }
+
+#midRowDiv{
   display:inline-block;
-  margin-left:-3.5vw;
-  /*to ensure the input boxes are horizontally centered,
-  ignoring the side buttons */
-  margin-top:8vh;
-  width:57vw;
+/*  background-color:#1e2e3e; */
 }
 
-#sideButtons{
+#sideButtonsLeft{
 
   float:left;
   display:inline-block;
-  width:5vw;
+  width:50px;   /*5vw; */
   background-color:cyan;
   text-align: center;
 
+
 }
 
+#sideButtonsRight{
+
+  float:right;
+  display:inline-block;
+  width:50px;   /*5vw; */
+  background-color:#141414;
+  text-align: center;
+
+}
 
 .sideButtonsList{
 
@@ -84,12 +111,15 @@ body{
   display: inline-block;
   border-radius: 50%;
   border-width: calc(0.4vh + 0.3vw);
-  height:4vw;
-  width:4vw;
-  font-size:2vw;
+  height:40px;
+  width:40px;
+  font-size:20px;
   text-align: center;
 
 }
+
+
+
 
 .clearer{
 
@@ -99,39 +129,33 @@ body{
 }
 
 #form{
-  margin-left:0vw;
   display:inline-block;
   align:center;
-  background-color: purple;
-}
-
-form {
-
-  overflow:scroll;
-  width:50vw;
-  height:45vh;
+  width:450px;
+  height:250px;
   background-color:gray;
-  position:relative;
+  margin: auto 15px;
   text-align:center;
-  background-color: blue;
+  background-color: inherit;
   scrollbar-color:cyan;
   overflow:auto;
+  border-color: white;
+  border-style: solid;
+
 }
 
 
 
 
-.textbox{
+input{
   box-sizing: border-box;
 
-  height: 6vh;
+  height: 35px;
   width: 100%;
-
   align:center;
 
-  border-style: solid;
-  border-radius: 2px;
-
+  border-width: 0px;
+  border-bottom: 3px solid;
 
   background-color:inherit;
   color:white;
@@ -141,18 +165,31 @@ border:5px solid yellow;
 margin:2% auto;
   font-size:calc(10px + 2.5vmin);
 */
-font-size:5vh;
+font-size:30px;
+}
 
+.inputOdd{
+  background-color:inherit;
+
+}
+
+.inputEven{
+  background-color:#11cf90;
+
+}
+
+.picked{
+  background-color: brown;
 }
 
 #lblCount{
 
-  font-size: calc(15px + 1vh);
-  height:5vh;
+  font-size: 25px ;
+  height:35px;
   font-weight: bold;
   text-align: center;
   background-color:purple;
-  min-height:20px;
+
 
 }
 
@@ -160,7 +197,6 @@ button{
 
 
   border-color:white;
-  border-width:1vh;
   background: none;
   color:white;
   font-weight: bold;
@@ -185,19 +221,48 @@ color:#bbbbbb;
 #pickButtonDiv{
   text-align:center;
   margin-top:5vh;
-  margin-left:3.5vw;
+
 
 }
 
 .pickButton{
-  border-width:1.2vh;
+  border-width:7px;
   border-radius: 10%;
-  font-size: 4vh;
-  width:15vw;
-  height:10vh;
-  min-width:150px;
-  min-height:50px;
+  font-size: 25px;
+  width:150px;
+  height:60px;
+  /*min-width:150px;
+  min-height:50px;*/
 }
+
+
+
+
+
+@media(max-width:600px){
+
+  #centerDiv{
+
+      width:500px;
+
+  }
+
+  #midRowDiv{
+
+    display: flex;
+    width:100%;
+    background-color: #a7fe8c;
+  }
+
+
+  #form{
+    width:400px;
+    margin: 0;
+  }
+}
+
+/* next: mobile devices */
+
 
 @keyframes App-logo-spin {
   from {
