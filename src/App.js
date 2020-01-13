@@ -21,10 +21,15 @@ class App extends React.Component{
     super(props);
 
     this.defaultCount = 3;
-    this.maxCount = 20;
+    this.maxCount = 10;
     this.minCount = 2;
     this.lastRandomNumber = 0; // used to reset the input box color for the next run
-    this.inputValues = new Array(this.maxCount)
+    this.inputValues = new Array(this.maxCount);
+
+    //this.refArray = new Array(this.maxCount)
+
+this.refArray = new Array(this.maxCount+1);
+
 
     /*
     NOTE:
@@ -192,14 +197,69 @@ if (inputID){
           boxClass = Style.inputEven
         }
 
-        inputs.push(<input type={boxType} ref={(el)=>{this.boxID = el;}} class={boxClass} id={boxID} onChange={this.handleChange.bind(this)} disabled={this.state.running} ></input>);
-        inputs.push(<div id={divID} ref={(el)=>{this.divID = el;}}></div>);
+        // remove bottom border for the very last box for cleaner look
+        if (i == this.maxCount){
+          boxClass += " inputLast"
+        }
+
+        this.refArray[i] = React.createRef();
+
+        inputs.push(<input type={boxType}  class={boxClass} id={boxID} onChange={this.handleChange.bind(this)} disabled={this.state.running}
+        ref ={this.refArray[i]} //{(ref) => {this.refArray[i] = ref}}
+      /*  onKeyPress={event => {
+              this.handleKeyPress(event)
+
+            }}*/
+            onKeyDown = {this.handleKeyPress}
+              ></input>);
+            //  ReactDOM.render(<p>ref:{this.currRef}</p>, document.getElementById('placeholder'));
 
       }
-
       return(
         <form>{inputs}</form>
       )
+
+
+
+  }
+
+  // up = 38
+  // down= 40
+  // if e.keyCode == '38'
+  // tab key : (e.key === 'Tab')
+
+// tab is already handled by browesers - no need to add
+  handleKeyPress = (e) => {
+
+    let i = parseInt(e.target.id.substring(5))
+
+        if ((e.key === 'Enter') || (e.keyCode == '40')) {
+
+          // enter key and last input box
+          if((e.key === 'Enter') && (i == this.state.count)&& (i < this.maxCount)) {
+            this.changeCount("increment")
+
+          }
+
+          if(i < this.maxCount){
+              this.refArray[i+1].current.focus()
+          }
+
+      }
+
+      else if((e.keyCode == '38') && (i > 1)){
+
+        this.refArray[i-1].current.focus()
+
+
+      }
+
+
+
+
+
+    ReactDOM.render(<p>i:{i}</p>, document.getElementById('placeholder'));
+
 
 
 
@@ -320,6 +380,7 @@ if (inputID){
                 //})
                 //.style.backgroundColor=this.secondaryColor
  //document.getElementById("Input"+(i+1)).style.backgroundColor="brown";
+
                },
                startTime + interval*i);
 
@@ -408,7 +469,7 @@ if (inputID){
       <div id="midRowDiv">
         <div id="sideButtonsLeft">
           <ul class="sideButtonsList">
-            <li><button type="button" class="sideButton" onClick={()=>this.changeCount("increment")} disabled={!this.state.enableIncrement || this.state.running}>+</button></li>
+            <li><button type="button" class="sideButton" onClick={()=>this.changeCount("increment")}  disabled={!this.state.enableIncrement || this.state.running}>+</button></li>
             <li id="lblCount">{this.state.count}</li>
             <li><button type="button" class="sideButton" onClick={()=>this.changeCount("decrement")} disabled={!this.state.enableDecrement || this.state.running}>-</button></li>
           </ul>

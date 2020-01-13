@@ -110,7 +110,8 @@ margin-bottom: 3vh;
 
   display: inline-block;
   border-radius: 50%;
-  border-width: calc(0.4vh + 0.3vw);
+  /*border-width: calc(0.4vh + 0.3vw);*/
+  border-width: 4.5px;
   height:40px;
   width:40px;
   font-size:20px;
@@ -132,12 +133,10 @@ margin-bottom: 3vh;
   display:inline-block;
   align:center;
   width:450px;
-  height:250px;
-  background-color:gray;
+  height:350px;
+  background-color:inherit;
   margin: auto 15px;
   text-align:center;
-  background-color: inherit;
-  scrollbar-color:cyan;
   overflow:auto;
   border-color: white;
   border-style: solid;
@@ -168,8 +167,12 @@ margin:2% auto;
 font-size:30px;
 }
 
+.inputLast{
+  border-bottom: 0px;
+}
+
 .inputOdd{
-  background-color:inherit;
+  background-color:#1EECA8;;
 
 }
 
