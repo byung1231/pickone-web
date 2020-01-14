@@ -28,6 +28,8 @@
   color: #61dafb;
 }
 
+/* mobile-first */
+
 
 body{
   background-color: #1EECA8;
@@ -119,15 +121,13 @@ margin-bottom: 3vh;
 
 }
 
-
-
-
-.clearer{
+/*.clearer{
 
   height:0;
   clear:both;
 
-}
+}*/
+
 
 #form{
   display:inline-block;
@@ -241,8 +241,9 @@ color:#bbbbbb;
 
 
 
-
-@media(max-width:600px){
+/* desktop-first approach */
+/* window minimized */
+@media(max-width:500px){
 
   #centerDiv{
 
@@ -264,7 +265,38 @@ color:#bbbbbb;
   }
 }
 
+/* ipads? or use the same as the above? */
+
+
+
+/* iphone */
+/*check for iphone diensions */
+@media(max-width:375px){
+
+  #centerDiv{
+
+      width:300px;
+
+  }
+
+  #midRowDiv{
+
+    display: flex;
+    width:100%;
+    background-color: #a7fe8c;
+  }
+
+
+  #form{
+    width:400px;
+    margin: 0;
+  }
+}
 /* next: mobile devices */
+
+
+
+
 
 
 @keyframes App-logo-spin {

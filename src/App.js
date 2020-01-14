@@ -41,7 +41,8 @@ this.refArray = new Array(this.maxCount+1);
                   enableIncrement: true,
                   enableDecrement: true,
                   animationActive:false,
-                  running: false
+                  running: false,
+                  inputValid: false
                 };
 
 
@@ -90,87 +91,19 @@ this.refArray = new Array(this.maxCount+1);
 
   }
 
-/*
-  incrementCount = () => {
-
-    let newCount = this.state.count;
-    newCount += 1;
-
-    this.setState({count:newCount});
-
-    if (newCount >= this.maxCount) {
-      this.setState({enableIncrement: false});
-    }
-    else{
-      this.setState({enableIncrement: true});
-    }
-
-    if (newCount > this.minCount) {
-      this.setState({enableDecrement: true});
-    }
-
-// REMOVE FOR PROD
-ReactDOM.render(<p>showing Input{newCount}</p>, document.getElementById('placeholder'));
-    document.getElementById("Input"+newCount).setAttribute("type","text");
-
-
-  }
-
-
-
-  decrementCount = () => {
-
-    let newCount = this.state.count;
-    newCount -= 1;
-    this.setState({count:newCount});
-
-    if (newCount <= this.minCount) {
-      this.setState({enableDecrement: false});
-    }
-    else{
-      this.setState({enableDecrement: true});
-    }
-
-    if (newCount < this.maxCount) {
-      this.setState({enableIncrement: true});
-    }
-
-    var inputID = "Input" + (newCount + 1);
-
-    ReactDOM.render(<p>hiding {inputID}</p>, document.getElementById('placeholder'));
-    document.getElementById(inputID).setAttribute("type","hidden");
-
-  }
-*/
 
 
   // keeping track of user inputs to validate them later
   handleChange(e) {
+    let inputID = e.target.id.substring(5)
 
+    if (inputID){
 
-//this.state.inputValues.map(item => ())
-  //   inputValues
+      //alert(inputID) //->use this as keys
 
-    // let temp = this.state.inputValue.slice(0, -this.lastInputAdded.length)
+      this.inputValues[inputID]=  e.target.value
 
-     //this.setState({inputValue: temp.concat(e.target.value)});
-
-     // use array
-
-
-let inputID = e.target.id.substring(5)
-
-if (inputID){
-
-
-
-  //alert(inputID) //->use this as keys
-
-  this.inputValues[inputID]=  e.target.value
-
-}
-
-
+    }
 
    }
 
@@ -284,6 +217,8 @@ if (inputID){
 
     let isEmpty = true;
 
+
+
     for(const input of this.inputValues){
       if(input != null){
         isEmpty = false
@@ -293,8 +228,11 @@ if (inputID){
     if (isEmpty){
 
       alert("Please check your inputs!");
+      this.setState({inputValid:false})
       return false
     }
+
+    this.setState({inputValid:true})
 
     return true
 
@@ -314,6 +252,16 @@ if (inputID){
   }
 
 
+  deleteAll = () => {
+
+
+    alert("are you sure?")
+
+
+  }
+
+
+  // main actions
    pickOne = () =>{
 
      if(this.validateInputs()){
@@ -322,10 +270,7 @@ if (inputID){
        this.resetInputStyles();
 
        // reset the color for the last chosen box, if not being ran for the first time
-    /*   if(this.lastRandomNumber > 0){
-          document.getElementById("Input"+this.lastRandomNumber).style.backgroundColor="inherit"
-       }
-*/
+
        let count = 0
        //let interval = 100 + (this.currCount * count)
        let interval = 100
@@ -375,11 +320,6 @@ if (inputID){
 
                setTimeout(() => {
                 document.getElementById("Input"+(i+1)).setAttribute("class", Style.picked);
-                //this.divID.scrollIntoView({
-                //  behavior:'smooth'
-                //})
-                //.style.backgroundColor=this.secondaryColor
- //document.getElementById("Input"+(i+1)).style.backgroundColor="brown";
 
                },
                startTime + interval*i);
@@ -477,7 +417,7 @@ if (inputID){
           {this.generateForms()}
         </div><div id="sideButtonsRight">
           <ul class="sideButtonsList">
-            <li><button type="button" class="sideButton" onClick={()=>alert("Delete")} disabled={this.state.running}>D</button></li>
+            <li><button type="button" class="sideButton" onClick={this.deleteAll} disabled={this.state.running || !this.state.inputValid}>D</button></li>
           </ul>
         </div>
       </div>
