@@ -15,18 +15,6 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-
-
-    
 
     <script data-ad-client="ca-pub-8437752455580456" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -43,31 +31,53 @@
 
 
     </div>
-    <div id="placeholder"></div>
-    <div id="test"></div>
+
+    <div id="placeholder"></div><!-- REMOVE FOR PROD -->
+    <div id="test"></div><!-- REMOVE FOR PROD -->
     <div id="banner">
+
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- pickone-web -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8437752455580456"
-     data-ad-slot="6003414141"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
 
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8437752455580456"
+       data-ad-slot="6003414141"
+       data-ad-format="horizontal"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+
+
+  </div>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-analytics.js"></script>
+
+  <script src="/__/firebase/7.6.2/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDW6u3-GLJDIhTXrd078Lvyf2SRsxgKujo",
+      authDomain: "pickone-web.firebaseapp.com",
+      databaseURL: "https://pickone-web.firebaseio.com",
+      projectId: "pickone-web",
+      storageBucket: "pickone-web.appspot.com",
+      messagingSenderId: "742823445813",
+      appId: "1:742823445813:web:4179f38eb99c42fdfa387c",
+      measurementId: "G-EF4X3RE7YQ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
   </body>
 </html>

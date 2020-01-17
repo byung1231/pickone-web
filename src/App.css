@@ -44,7 +44,7 @@ body{
   color:white;
   font-family:"Avenir Next", "Arial";
   font-weight:bold;
-  background-color: red;
+  background-color: inherit;
   left:0;
   font-size: 45px;
   margin-top:40px;
@@ -59,54 +59,97 @@ margin-bottom: 3vh;
 }
 
 
-  #centerDiv{
+#centerDiv{
 
-    display:inline-block;
-    font-size: 0;
+  display:inline-block;
+  font-size: 0;
 
-    /*to ensure the input boxes are horizontally centered,
-    ignoring the side buttons */
-    margin-top:8vh;
-    width:600px;
-    text-align: center;
+  /*to ensure the input boxes are horizontally centered,
+  ignoring the side buttons */
+  margin-top:8vh;
+  width:600px;
+  text-align: center;
 
-  }
+}
 
 #midRowDiv{
   display:inline-block;
 /*  background-color:#1e2e3e; */
 }
 
-#sideButtonsLeft{
 
-  float:left;
-  display:inline-block;
-  width:50px;   /*5vw; */
-  background-color:cyan;
+
+button{
+
+  font-family:"Avenir Next", "Arial";
+  border-color:white;
+  background: none;
+  color:white;
+  font-weight: bold;
+  border-style:solid;
   text-align: center;
+  padding:0px;
+
+}
+
+.pickButton:active{
+  background-color: #afaeae;
+  border-color: #afaeae;
+}
+
+
+button:disabled, .invalid{
+
+border-color:#bbbbbb;
+color:#bbbbbb;
 
 
 }
 
-#sideButtonsRight{
+#pickButtonDiv{
+  text-align:center;
+  margin-top:5vh;
 
-  float:right;
+}
+
+.pickButton{
+  border-width:7px;
+  border-radius: 10%;
+  font-size: 25px;
+  width:150px;
+  height:60px;
+  /*min-width:150px;
+  min-height:50px;*/
+}
+
+#sideButtonsDiv{
   display:inline-block;
   width:50px;   /*5vw; */
   background-color:#141414;
   text-align: center;
+}
+
+#sideButtonsLeftDiv{
+
+  float:left;
+}
+
+#sideButtonsRightDiv{
+
+  float:right;
 
 }
 
+/* removing indentations for list containing the buttons */
 .sideButtonsList{
 
   padding:0;
   list-style-type: none;
   vertical-align:middle;
-  text-align:center;
   background-color: #994554;
 
 }
+
 
 .sideButton{
 
@@ -117,16 +160,9 @@ margin-bottom: 3vh;
   height:40px;
   width:40px;
   font-size:20px;
-  text-align: center;
 
 }
 
-/*.clearer{
-
-  height:0;
-  clear:both;
-
-}*/
 
 
 #form{
@@ -164,12 +200,9 @@ border:5px solid yellow;
 margin:2% auto;
   font-size:calc(10px + 2.5vmin);
 */
-font-size:30px;
+  font-size:28px;
 }
 
-.inputLast{
-  border-bottom: 0px;
-}
 
 .inputOdd{
   background-color:#1EECA8;;
@@ -181,9 +214,18 @@ font-size:30px;
 
 }
 
+
+.inputLast{
+  border-bottom: 0px;
+  background-color: red;
+}
+
+
 .picked{
   background-color: brown;
 }
+
+
 
 #lblCount{
 
@@ -196,54 +238,12 @@ font-size:30px;
 
 }
 
-button{
-
-
-  border-color:white;
-  background: none;
-  color:white;
-  font-weight: bold;
-  border-style:solid;
-
-}
-
-.pickButton:active{
-  background-color: #afaeae;
-  border-color: #afaeae;
-}
-
-
-button:disabled{
-
-border-color:#bbbbbb;
-color:#bbbbbb;
-
-
-}
-
-#pickButtonDiv{
-  text-align:center;
-  margin-top:5vh;
-
-
-}
-
-.pickButton{
-  border-width:7px;
-  border-radius: 10%;
-  font-size: 25px;
-  width:150px;
-  height:60px;
-  /*min-width:150px;
-  min-height:50px;*/
-}
-
-
 
 
 /* desktop-first approach */
 /* window minimized */
-@media(max-width:500px){
+/* ipads? */
+@media(max-width:600px){
 
   #centerDiv{
 
@@ -255,14 +255,16 @@ color:#bbbbbb;
 
     display: flex;
     width:100%;
-    background-color: #a7fe8c;
+    /*background-color: #a7fe8c;*/
   }
 
 
   #form{
     width:400px;
     margin: 0;
+
   }
+
 }
 
 /* ipads? or use the same as the above? */
@@ -275,7 +277,8 @@ color:#bbbbbb;
 
   #centerDiv{
 
-      width:300px;
+      width:350px;
+      margin-top:4vh;
 
   }
 
@@ -288,13 +291,20 @@ color:#bbbbbb;
 
 
   #form{
-    width:400px;
+    width:250px;
     margin: 0;
+
+  }
+
+  .sideButton{
+    height:50px;
+    width:50px;
+  }
+
+  input{
+    font-size:25px;
   }
 }
-/* next: mobile devices */
-
-
 
 
 

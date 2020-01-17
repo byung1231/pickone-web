@@ -7,13 +7,12 @@ const Style ={
 
   inputOdd : "inputOdd",
   inputEven : "inputEven",
-  picked: "picked"
+  picked: "picked",
+  inputLast : "inputLast"
 
 };
 
-// simplified:  no scrolling? but 10 choices instead
-
-
+// Simplified version - no overflowing boxes
 class App extends React.Component{
 
   constructor(props){
@@ -25,26 +24,15 @@ class App extends React.Component{
     this.minCount = 2;
     this.lastRandomNumber = 0; // used to reset the input box color for the next run
     this.inputValues = new Array(this.maxCount);
-
-    //this.refArray = new Array(this.maxCount)
-
-this.refArray = new Array(this.maxCount+1);
-
-
-    /*
-    NOTE:
-    Use state to store data if it is involved in rendering or data flow (i.e. if its used directly or indirectly in render method)
-    Use other instance fields to store data if value is NOT involved in rendering or data flow (to prevent rendering on change of data) e.g. to store a timer ID that is not used in render method. See TimerID example in official docs to understand this valid case.
-    */
+    this.refArray = new Array(this.maxCount+1); // used to validate inputs in the boxes
 
     this.state = { count: this.defaultCount,
                   enableIncrement: true,
                   enableDecrement: true,
                   animationActive:false,
-                  running: false,
-                  inputValid: false
+                  isRunning: false,
+                  hasValidInputs: false
                 };
-
 
   }
 
@@ -96,19 +84,23 @@ this.refArray = new Array(this.maxCount+1);
   // keeping track of user inputs to validate them later
   handleChange(e) {
     let inputID = e.target.id.substring(5)
+    let inputText = e.target.value
 
-    if (inputID){
-
-      //alert(inputID) //->use this as keys
 
       this.inputValues[inputID]=  e.target.value
 
-    }
+      if(!this.validateInputs()){
+        this.setState({hasValidInputs:false})
+
+      }
+      else{
+        this.setState({hasValidInputs:true})
+      }
 
    }
 
 // generates input boxes
-  generateForms = () => {
+  generateInputBoxes = () => {
       const inputs = [];
       const div = []; // dummy div to scroll the container programatically
 
@@ -132,12 +124,12 @@ this.refArray = new Array(this.maxCount+1);
 
         // remove bottom border for the very last box for cleaner look
         if (i == this.maxCount){
-          boxClass += " inputLast"
+          boxClass += " " + Style.inputLast
         }
 
         this.refArray[i] = React.createRef();
 
-        inputs.push(<input type={boxType}  class={boxClass} id={boxID} onChange={this.handleChange.bind(this)} disabled={this.state.running}
+        inputs.push(<input type={boxType}  class={boxClass} id={boxID} onChange={this.handleChange.bind(this)} disabled={this.state.isRunning}
         ref ={this.refArray[i]} //{(ref) => {this.refArray[i] = ref}}
       /*  onKeyPress={event => {
               this.handleKeyPress(event)
@@ -153,6 +145,22 @@ this.refArray = new Array(this.maxCount+1);
       )
 
 
+
+  }
+
+
+  generatePickButton = () => {
+
+    let btnClass = "pickButton"
+
+    // should still respond to onclick when disalbed, alering users of invalid inputs
+    if(!this.validateInputs()){
+      btnClass += " invalid"
+    }
+
+    return(
+        <button type="button" class={btnClass} onClick={this.pickOne} disabled={this.state.isRunning}>Pick One!</button>
+    )
 
   }
 
@@ -207,38 +215,35 @@ this.refArray = new Array(this.maxCount+1);
       if (i % 2 == 0){
         boxClass = Style.inputEven
       }
+      // remove bottom border for the very last box for cleaner look
+      if (i == this.maxCount){
+        boxClass += " " + Style.inputLast
+      }
 
       document.getElementById("Input"+i).setAttribute("class", boxClass);
 
     }
 
   }
+
+  // validates inputs in all boxes and changes states accordingly
   validateInputs = () => {
 
     let isEmpty = true;
 
-
-
     for(const input of this.inputValues){
-      if(input != null){
+      if(input != null && input.length > 0){
         isEmpty = false
       }
     }
 
-    if (isEmpty){
+    // if isEmpty, returns false (inputs are invalid)
+    return !isEmpty
 
-      alert("Please check your inputs!");
-      this.setState({inputValid:false})
-      return false
-    }
-
-    this.setState({inputValid:true})
-
-    return true
 
   }
 
-
+  // generates random number between 1 and current box count
   generateRandomNumber = () => {
 
     var randomRaw = Math.random()
@@ -254,18 +259,26 @@ this.refArray = new Array(this.maxCount+1);
 
   deleteAll = () => {
 
+    // maybe add a title to the alert box? -> NOT PSOSIBLE
+    if(window.confirm("Are you sure?")){
 
-    alert("are you sure?")
-
-
+      for(let i=1; i<=this.maxCount; i++){
+          this.inputValues[i] = ""
+          document.getElementById("Input"+i).value = ""
+      }
+    }
   }
 
 
   // main actions
    pickOne = () =>{
 
-     if(this.validateInputs()){
-       this.setState({running:true});
+     if(!this.validateInputs()){
+       alert("Please check your inputs!");
+
+     }
+     else{
+       this.setState({isRunning:true});
 
        this.resetInputStyles();
 
@@ -291,8 +304,11 @@ this.refArray = new Array(this.maxCount+1);
        // animation for the boxes
        while (count < numOfLoops) {
 
-         let startTime = interval * ((this.state.count * 2 * count)-(2*count))
+         let startTime = interval * ((currCount * 2 * count)-(2*count))
           //take 2 out from the times for first and last boxes (since they are only visited once)
+
+          //end time to reset the state back to !isRunning and re-enable the buttons - will be set at the end of the cycle
+        let endTime = 0
 
         setTimeout(() => {
             // ReactDOM.render("currCount: " + this.state.count + ", startTime: " + startTime.toString(), document.getElementById('placeholder'));
@@ -301,12 +317,13 @@ this.refArray = new Array(this.maxCount+1);
            startTime);
 
 
-           //NEW APPROACH: SEPARATE GOING UP AND down
+           // Separating going down and up
 
            // going down
            for(let i = 0; i < currCount; i++){
 
              let boxClass = Style.inputOdd
+
 
              let divID = "Div"+(i+1)
              let boxID = "Input"+(i+1)
@@ -315,6 +332,8 @@ this.refArray = new Array(this.maxCount+1);
              if (i % 2 == 0){
                boxClass = Style.inputEven
              }
+
+
               // Step 1: Change color (going down)
              if (i < currCount - 1){
 
@@ -333,6 +352,13 @@ this.refArray = new Array(this.maxCount+1);
                   // document.getElementById("Input"+i).style.backgroundColor="inherit";
                  },
                  startTime + interval*i);
+
+                 // if it is the last cycle, save the endtime
+                 // must be saved when going down as well, in case the random number is the last one
+                 // (i.e. it will not go back up in the last loop)
+                  if(count == numOfLoops - 1){// && i == 1){
+                     endTime = startTime + (interval * (currCount - i+1))
+                   }
              }
            }
 
@@ -342,6 +368,9 @@ this.refArray = new Array(this.maxCount+1);
            for(let i = currCount; i > 0; i--){
 
              let boxClass = Style.inputOdd
+             let boxClassPicked = Style.picked
+             let lastInputBox = "" // class for the very last input box (with the bottom border disabled)
+             // only needed when going back up, b/c it is visited only once when going back up
 
              // alternating color schemes for boxes
              //use i+1 instead of i+1, b/c it is only used to restore previous boxes
@@ -349,9 +378,17 @@ this.refArray = new Array(this.maxCount+1);
                boxClass = Style.inputEven
              }
 
+             // remove bottom border for the very last box for cleaner look
+             if (i  == this.maxCount){
+               //lastInputBox = " " + Style.inputLast
+               boxClassPicked += (" " + Style.inputLast)
+             }
+
+          //   boxClass += lastInputBox
+
              // Step 3: Change color (coming back up from the bottom)
              setTimeout(() => {
-                      document.getElementById("Input"+i).setAttribute("class", Style.picked); //.style.backgroundColor=this.secondaryColor
+                      document.getElementById("Input"+i).setAttribute("class", boxClassPicked); //.style.backgroundColor=this.secondaryColor
                },
                startTime + (interval * (currCount - i + 1))
              )
@@ -360,32 +397,53 @@ this.refArray = new Array(this.maxCount+1);
                // so that means e.g. if count = 3, and if we dont subtract -1,
                // then it would be executed both for both times: interval * 3 (i = 0; step 3) and interval * 2 (i = 2; step 1)
 
-
+               // must be called again when restoring
+               if (i + 1 == this.maxCount){
+                 lastInputBox = " " + Style.inputLast
+               }
 
              // Step 4: Restore the color again
              if ((i + 1) <= currCount) {
-               setTimeout(() => {
-                   document.getElementById("Input"+(i+1)).setAttribute("class", boxClass);
-                 },
-               startTime +  (interval * (currCount - i+1))
-             )
+                 setTimeout(() => {
+                     document.getElementById("Input"+(i+1)).setAttribute("class", boxClass + lastInputBox);
+                   },
+                 startTime +  (interval * (currCount - i+1))
+               );
+              // if it is the last cycle, save the endtime
+               if(count == numOfLoops - 1){// && i == 1){
+                  endTime = startTime + (interval * (currCount - i+1))
+
+                /*  setTimeout(() => {
+                      this.setState({isRunning:false})
+                    }
+                    ,interval)*/
+               }
            }
 
 
+
+            // Stop at the random number
              if ((count == numOfLoops - 1) && ( i == randomNumber )){
+  // REMOVE FOR PROD
   ReactDOM.render("i: " + i, document.getElementById('placeholder'));
+          setTimeout(() => {
+                this.setState({isRunning:false})
+              }
+              ,endTime + interval)
                break;
              }
 
            }
+
+
        // re-enabling the buttons after all the actions
              // only run once
              if((count == numOfLoops - 1)){// && (i == currCount + 1)){
-               setTimeout(() => {
-                   this.setState({running:false})
+          /*     setTimeout(() => {
+                   this.setState({isRunning:false})
                  }
-                 ,
-                 startTime + (currCount * interval * 2))
+                 ,endTime)*/
+                 //startTime + (currCount * interval * 2))
              }
 
 
@@ -407,24 +465,25 @@ this.refArray = new Array(this.maxCount+1);
     return(
       <div>
       <div id="midRowDiv">
-        <div id="sideButtonsLeft">
+        <div id="sideButtonsLeftDiv" class="sideButtonsDiv">
           <ul class="sideButtonsList">
-            <li><button type="button" class="sideButton" onClick={()=>this.changeCount("increment")}  disabled={!this.state.enableIncrement || this.state.running}>+</button></li>
+            <li><button type="button" class="sideButton" onClick={()=>this.changeCount("increment")}  disabled={!this.state.enableIncrement || this.state.isRunning}>+</button></li>
             <li id="lblCount">{this.state.count}</li>
-            <li><button type="button" class="sideButton" onClick={()=>this.changeCount("decrement")} disabled={!this.state.enableDecrement || this.state.running}>-</button></li>
+            <li><button type="button" class="sideButton" onClick={()=>this.changeCount("decrement")} disabled={!this.state.enableDecrement || this.state.isRunning}>-</button></li>
           </ul>
         </div><div id="form">
-          {this.generateForms()}
-        </div><div id="sideButtonsRight">
+          {this.generateInputBoxes()}
+        </div><div id="sideButtonsRightDiv">
           <ul class="sideButtonsList">
-            <li><button type="button" class="sideButton" onClick={this.deleteAll} disabled={this.state.running || !this.state.inputValid}>D</button></li>
+            <li><button type="button" class="sideButton" onClick={this.deleteAll} disabled={this.state.isRunning || !this.state.hasValidInputs}>D</button></li>
           </ul>
         </div>
       </div>
         <div class="clearer"></div>
 
         <div id="pickButtonDiv">
-          <button type="button" class="pickButton" onClick={this.pickOne} disabled={this.state.running}>Pick One!</button>
+        {this.generatePickButton()}
+
         </div>
     </div>
     );
