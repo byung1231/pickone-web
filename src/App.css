@@ -39,25 +39,33 @@ body{
   text-align: center;
 }
 
-#title{
+#titleLineOne{
 
   color:white;
-  font-family:"Avenir Next", "Arial";
+
   font-weight:bold;
-  background-color: inherit;
+
   left:0;
   font-size: 45px;
-  margin-top:40px;
-  marign-bottom:25px;
-/*
-font-size: 7vh;
-margin-top:5vh;
-margin-bottom: 3vh;
+  margin-top:20px;
+  margin-bottom:-15px;
+  width:200px;
+  margin-left: auto;
+  margin-right:auto;
 
-*/
 
 }
 
+#titleLineTwo{
+  font-size:20px;
+  font-weight:bold;
+  text-align: right;
+  width:200px;
+
+  margin:auto;
+
+
+}
 
 #centerDiv{
 
@@ -66,7 +74,7 @@ margin-bottom: 3vh;
 
   /*to ensure the input boxes are horizontally centered,
   ignoring the side buttons */
-  margin-top:8vh;
+  margin-top:20px;
   width:600px;
   text-align: center;
 
@@ -77,6 +85,16 @@ margin-bottom: 3vh;
 /*  background-color:#1e2e3e; */
 }
 
+#imgDeleteAll{
+
+  width:70%;
+  height:70%;
+  display: block;
+margin-left: auto;
+margin-right: auto;
+
+
+}
 
 
 button{
@@ -100,15 +118,17 @@ button{
 
 button:disabled, .invalid{
 
-border-color:#bbbbbb;
-color:#bbbbbb;
+border-color:#aeaeae;
+color:#aeaeae;
+opacity:0.7;
 
 
 }
 
 #pickButtonDiv{
   text-align:center;
-  margin-top:5vh;
+  margin-top:20px;
+  margin-bottom:10px;
 
 }
 
@@ -125,7 +145,6 @@ color:#bbbbbb;
 #sideButtonsDiv{
   display:inline-block;
   width:50px;   /*5vw; */
-  background-color:#141414;
   text-align: center;
 }
 
@@ -146,7 +165,7 @@ color:#bbbbbb;
   padding:0;
   list-style-type: none;
   vertical-align:middle;
-  background-color: #994554;
+/*  background-color: #994554;*/
 
 }
 
@@ -217,12 +236,11 @@ margin:2% auto;
 
 .inputLast{
   border-bottom: 0px;
-  background-color: red;
 }
 
 
 .picked{
-  background-color: brown;
+  background-color: #E7EE69;
 }
 
 
@@ -233,12 +251,16 @@ margin:2% auto;
   height:35px;
   font-weight: bold;
   text-align: center;
-  background-color:purple;
+
 
 
 }
 
-
+#appstore{
+  margin-top:5px;
+  font-size:15px;
+  font-weight: bold;
+}
 
 /* desktop-first approach */
 /* window minimized */
@@ -271,9 +293,12 @@ margin:2% auto;
 
 
 
-/* iphone */
-/*check for iphone diensions */
-@media(max-width:375px){
+/* iPhone 6/7/8/X/Xs/11 Pro : 375px
+XR/11/8+/Xs Max/11 Pro Max: 414px
+*/
+
+/* For iPhone and iPhone pluses/maxes */
+@media(max-width:414px){
 
   #centerDiv{
 
@@ -286,7 +311,7 @@ margin:2% auto;
 
     display: flex;
     width:100%;
-    background-color: #a7fe8c;
+
   }
 
 
@@ -296,6 +321,7 @@ margin:2% auto;
 
   }
 
+  /* make the buttons a bit bigger for mobile devices */
   .sideButton{
     height:50px;
     width:50px;
@@ -309,6 +335,7 @@ margin:2% auto;
 
 
 
+/*
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -316,4 +343,4 @@ margin:2% auto;
   to {
     transform: rotate(360deg);
   }
-}
+}*/

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo.svg';
+import deleteAll from './deleteall.png';
 import './App.css';
 
 const Style ={
@@ -72,9 +73,6 @@ class App extends React.Component{
 
     this.setState({count:newCount});
 
-    // REMOVE FOR PROD
-    ReactDOM.render(<p>showing/hiding Input{newCount}, type:{type}</p>, document.getElementById('placeholder'));
-      //  document.getElementById("Input"+newCount).setAttribute("type","text");
 
 
   }
@@ -199,7 +197,7 @@ class App extends React.Component{
 
 
 
-    ReactDOM.render(<p>i:{i}</p>, document.getElementById('placeholder'));
+    //ReactDOM.render(<p>i:{i}</p>, document.getElementById('placeholder'));
 
 
 
@@ -237,6 +235,8 @@ class App extends React.Component{
       }
     }
 
+
+
     // if isEmpty, returns false (inputs are invalid)
     return !isEmpty
 
@@ -251,7 +251,7 @@ class App extends React.Component{
     // adding 1 b/c minimum has to be 1 (input box IDs start from 1)
     // subtracing 1 b/c the max has to be this.state.count (e.g. 3)
 
-    ReactDOM.render("randomRaw: " + randomRaw, document.getElementById('test'));
+  //  ReactDOM.render("randomRaw: " + randomRaw, document.getElementById('test'));
 
     return Math.round(random);
   }
@@ -260,13 +260,20 @@ class App extends React.Component{
   deleteAll = () => {
 
     // maybe add a title to the alert box? -> NOT PSOSIBLE
-    if(window.confirm("Are you sure?")){
+    if(window.confirm("Are you sure you want to delete all inputs?")){
 
       for(let i=1; i<=this.maxCount; i++){
           this.inputValues[i] = ""
           document.getElementById("Input"+i).value = ""
+
       }
+
+      this.resetInputStyles();
+      this.setState({hasValidInputs:false});
     }
+
+
+
   }
 
 
@@ -312,7 +319,7 @@ class App extends React.Component{
 
         setTimeout(() => {
             // ReactDOM.render("currCount: " + this.state.count + ", startTime: " + startTime.toString(), document.getElementById('placeholder'));
-             ReactDOM.render("rand: " + randomNumber, document.getElementById('placeholder'));
+          //   ReactDOM.render("rand: " + randomNumber, document.getElementById('placeholder'));
            },
            startTime);
 
@@ -425,7 +432,7 @@ class App extends React.Component{
             // Stop at the random number
              if ((count == numOfLoops - 1) && ( i == randomNumber )){
   // REMOVE FOR PROD
-  ReactDOM.render("i: " + i, document.getElementById('placeholder'));
+  //ReactDOM.render("i: " + i, document.getElementById('placeholder'));
           setTimeout(() => {
                 this.setState({isRunning:false})
               }
@@ -475,7 +482,8 @@ class App extends React.Component{
           {this.generateInputBoxes()}
         </div><div id="sideButtonsRightDiv">
           <ul class="sideButtonsList">
-            <li><button type="button" class="sideButton" onClick={this.deleteAll} disabled={this.state.isRunning || !this.state.hasValidInputs}>D</button></li>
+            <li><button type="button" class="sideButton" onClick={this.deleteAll} disabled={this.state.isRunning || !this.state.hasValidInputs}>
+            <img src={deleteAll} id="imgDeleteAll"/></button></li>
           </ul>
         </div>
       </div>
