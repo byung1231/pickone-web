@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/pickone-web/static/css/main.39a1bbbc.chunk.css",
+    "main.js": "/pickone-web/static/js/main.f4982075.chunk.js",
+    "main.js.map": "/pickone-web/static/js/main.f4982075.chunk.js.map",
+    "runtime-main.js": "/pickone-web/static/js/runtime-main.85fa40d3.js",
+    "runtime-main.js.map": "/pickone-web/static/js/runtime-main.85fa40d3.js.map",
+    "static/js/2.ae4f37c2.chunk.js": "/pickone-web/static/js/2.ae4f37c2.chunk.js",
+    "static/js/2.ae4f37c2.chunk.js.map": "/pickone-web/static/js/2.ae4f37c2.chunk.js.map",
+    "index.html": "/pickone-web/index.html",
+    "precache-manifest.413afa63a3ce1889ef51109c4b1e40a5.js": "/pickone-web/precache-manifest.413afa63a3ce1889ef51109c4b1e40a5.js",
+    "service-worker.js": "/pickone-web/service-worker.js",
+    "static/css/main.39a1bbbc.chunk.css.map": "/pickone-web/static/css/main.39a1bbbc.chunk.css.map",
+    "static/js/2.ae4f37c2.chunk.js.LICENSE": "/pickone-web/static/js/2.ae4f37c2.chunk.js.LICENSE",
+    "static/media/App.css": "/pickone-web/static/media/AvenirNext-Medium-06.1b585f1c.ttf",
+    "static/media/logo.svg": "/pickone-web/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.85fa40d3.js",
+    "static/js/2.ae4f37c2.chunk.js",
+    "static/css/main.39a1bbbc.chunk.css",
+    "static/js/main.f4982075.chunk.js"
+  ]
+}
